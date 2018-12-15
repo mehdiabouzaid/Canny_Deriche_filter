@@ -1,0 +1,147 @@
+%%%%%
+% Classe pour réaliser des rapports aux couleurs de l'INSA V2.1
+%%%%%
+
+%%%%%
+% Auteur initial inconnu.
+% Modifié, vectorisé et actualisé par Jean-Baptiste Louvet
+%%%%%
+
+
+\usepackage[english,frenchb]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[left=2cm, right=2cm, top=4.7cm, bottom=5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{moreverb}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{GRIS}{cmyk}{0.7,0.6,0.5,0.3}
+\definecolor{BLEU}{cmyk}{1,0.9,0.1,0}
+
+\pagestyle{fancy}
+
+\hypersetup
+{
+ %%   Champs dans les propriétés du document
+ pdftitle={}, % titre dans les proprietes du pdf
+ pdfauthor={}, % auteur dans les proprietes du pdf
+ pdfsubject={}, % sujet dans les proprietes du pdf
+ pdfkeywords={}, % mots-cles dans les proprietes du pdf
+ %%   Liens
+ %    linkbordercolor=  %couleur des cadres autour des liens
+}
+
+\newcommand{\PageDeGarde}[5]
+{
+ \thispagestyle{empty}
+
+ \begin{picture}(0,0)
+  \put(-5,-365)
+  {
+   %%   pour mettre une image de fond qui sera recouverte.
+   \includegraphics[width=0.95\textwidth]{#1}
+  }
+
+  \put(-60, 60)
+  {
+   \includegraphics[width=100mm]{Images/TemplateINSA/INSALogo}
+  }
+  % 	\put(-78,-725)
+  % 	{
+  % %%   Image de la page de garde recouvrant la precedente en PNG
+  % 		\includegraphics[width=210mm]{Images/TemplateINSA/couverture.png}
+  % 	}
+  \put(-275,-650)
+  {
+   %%   Image de la page de garde recouvrant la precedente bottom
+   \includegraphics[width=300mm]{Images/TemplateINSA/Volutes1}
+  }
+  \put(-78,30)
+  {
+   %%   Image de la page de garde recouvrant la precedente top
+   \includegraphics[width=210mm]{Images/TemplateINSA/Volutes1Top}
+  }
+  \put(140,-600)
+  {
+   \color{BLEU}
+   {
+    %%   Textes a droite du trait : en bleu et en grand - le premier en gras, le second classique
+    \begin{minipage}{13cm}
+     \huge \textbf{#2} \\ \huge #3
+    \end{minipage}
+   }
+  }
+  \put(-65,-590)
+  {	\color{GRIS}
+   %%   Texte a gauche du trait : en gris	et en grand
+   \begin{minipage}
+    {6.3cm} \Large \raggedleft #4
+   \end{minipage}
+  }
+  \put(-80,-685)
+  {
+   \color{GRIS}
+   {
+    %%   Texte en bas a droite : en gris	et en grand
+    \begin{minipage}{20.5cm}
+     \raggedleft \Large #5
+    \end{minipage}
+   }
+  }
+ \end{picture}
+
+ \newpage
+}
+
+\newcommand{\Page}[2]
+{
+ \fancyhead[L]
+ {
+  \begin{picture}(0,0)	\put(-61,-25)
+   {
+    \includegraphics[width=211mm]{Images/TemplateINSA/bandeau_cyan_top}
+   }
+   \put(-55,65)
+   {
+    \includegraphics[width=50mm]{Images/TemplateINSA/INSALogoBlanc}
+   }
+  \end{picture}
+ }
+ \fancyhead[C]{}
+ \fancyhead[R]{\color{white} \scshape\leftmark}
+ \fancyfoot[L,R]{}
+ \renewcommand{\headrulewidth}{0pt}
+ \renewcommand{\footrulewidth}{0pt}
+ \fancyfoot[C]
+ {
+  \begin{picture}(0,0)
+   \put(-140,-80)
+   {
+    \color{GRIS}{\thepage}
+   }
+   \put(-70,-100)
+   {
+    %   Pour mettre une image - un logo - en bas a droite de chaque page
+    \includegraphics[height=17.5mm]{Images/TemplateINSA/#1}
+   }
+   \put(130,-100)
+   {
+    %   Pour mettre une image - un logo - en bas a droite de chaque page
+    \includegraphics[height=17.5mm]{Images/TemplateINSA/#2}
+   }
+   % 		\put(-301,-135)
+   % 		{
+   % 			\includegraphics[width=211mm]{Images/TemplateINSA/volutes_bottom.png}
+   % 		}
+   \put(-400,-140)
+   {
+    \includegraphics[width=250mm]{Images/TemplateINSA/Volutes3Bottom}
+   }
+  \end{picture}
+ }%
+}
+

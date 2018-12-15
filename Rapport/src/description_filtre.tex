@@ -1,0 +1,61 @@
+\subsection{Etapes de la détection de contours}
+
+Comme le détecteur de contours de Canny, celui de Deriche s'effectue en quatre étapes :
+
+\begin{itemize}
+	\item[\textbf{1}] Gradients et lissage (réduction du bruit)
+	\item[\textbf{2}] Norme du gradient et direction du gradient
+	\item[\textbf{3}] Suppression des non-maxima locaux
+	\item[\textbf{4}] Seuillage par hystérésis
+\end{itemize}
+
+\subsection{Critères du filtre}
+
+	Dans le filtre de Deriche, on retrouve les mêmes critères de détection optimale des contours du filtre de Canny : 	
+\begin{itemize}
+	\item[\textbf{A}] Bonne détection : faible taux d'erreur dans la signalisation des contours. Il ne faut manquer aucun contour, ni en rajouter (faux positifs)
+	\item[\textbf{B}] Bonne localisation : les points détectés comme contours doivent être aussi proches que possible des points de contours réels
+	\item[\textbf{C}] Clarté de la réponse : un point du contour ne doit être détecté qu'une seule fois par le filtre. Ce critère est inclus implicitement dans le premier critère puisque si l'on détecte deux contours là où il n'y en a qu'un, une des deux réponses doit être considérée comme fausse. \\
+\end{itemize}
+\noindent
+C'est pourquoi ce filtre est communément appelé opérateur de Canny-Deriche.
+
+\subsection{Améliorations du filtre de Canny}
+
+La principale différence se trouve dans l'implémentation des deux premières étapes de l'algorithme (\textbf{1},\textbf{2}). Contrairement au détecteur de contours de Canny, celui de Deriche utilise un filtre RII \footnote{Réponse Impulsionnelle Infinie} et non RIF \footnote{Réponse Impulsionnelle Finie}.
+
+A chaque critère (\textbf{A},\textbf{B},\textbf{C}) est associé une formule mathématique. La maximisation de ces trois critères conduit à la résolution de l'équation différentielle (\ref{eq:equadiff}) dont la solution est l'opérateur $ f $.
+
+\paragraph{Equation différentielle}
+
+\begin{align}\label{eq:equadiff}
+& 2 \cdot f(x) - 2 \cdot \lambda_1 \cdot f''(x) + 2 \cdot \lambda_2 \cdot f''''(x) + \lambda_3 = 0
+\end{align}
+
+\subsubsection{Canny : filtre RIF}
+\paragraph{Conditions initiales}
+
+\[ f(0)=0 \quad f(W)=0 \quad f'(0)=S \quad f'(W)=0 \]
+
+\paragraph{Solution générale sur $ [-W,W] $}
+
+\[ f(x) = a_1 \cdot e^{\alpha \cdot x} \cdot sin(\omega \cdot x) + a_2 \cdot e^{\alpha \cdot x} \cdot cos(\omega \cdot x) + a_3 \cdot e^{-\alpha \cdot x} \cdot sin(\omega \cdot x) + a_4 \cdot e^{-\alpha \cdot x} \cdot cos(\omega \cdot x) + C \]
+
+\subsubsection{Deriche : filtre RII}
+\paragraph{Conditions initiales}
+
+\[ f(0)=0 \quad f(+ \infty)=0 \quad f'(0)=S \quad f'(+ \infty)=0 \]
+
+\paragraph{Solution générale sur $ \rm I\!R $}
+
+\[ f(x)= -c \cdot e^{-\alpha \cdot |x|} \cdot sin(\omega \cdot x)  \]
+
+\paragraph{}
+
+L'avantage du filtre RII de Deriche est qu'il peut être adapté aux caractéristiques de l'image en modifiant seulement deux paramètres $ (\alpha, \omega) \in \rm I\!R^+ $, sans impacter le temps d'exécution.
+\begin{itemize}
+\item[•] Si la valeur de $ \alpha $ est petite (généralement entre $ 0.25 $ et $ 0.5 $), la détection est meilleure.
+\item[•] Si la valeur de $ \alpha $ est grande (entre 2 et 3), la localisation des contours est meilleure.
+\end{itemize}
+\noindent
+C'est pourquoi, dans la plupart des cas, il est recommandé de fixer la valeur de $ \alpha $ à 1.

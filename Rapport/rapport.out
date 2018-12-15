@@ -1,0 +1,28 @@
+\BOOKMARK [2][-]{subsection.0.1}{Que signifie appliquer un d\351tecteur de contour en 1D ? \(mettre un exemple\)}{}% 1
+\BOOKMARK [2][-]{subsection.0.2}{Comment quantifier le bruit r\351sultant dans l'image finale avec les contours ?}{}% 2
+\BOOKMARK [2][-]{subsection.0.3}{Quelle est la diff\351rence entre meilleur d\351tection et meilleure localisation ?}{}% 3
+\BOOKMARK [2][-]{subsection.0.4}{In an FIR realization, the size of the two masks X\(m, n\) and Y\(m, n\) depends on a and the approximation error caused by not extending them to infinity.}{}% 4
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 5
+\BOOKMARK [1][-]{section.2}{Description du filtre}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{Etapes de la d\351tection de contours}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.2}{Crit\350res du filtre}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Am\351liorations du filtre de Canny}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Canny : filtre RIF}{subsection.2.3}% 10
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Deriche : filtre RII}{subsection.2.3}% 11
+\BOOKMARK [1][-]{section.3}{Mod\351lisation math\351matique}{}% 12
+\BOOKMARK [2][-]{subsection.3.1}{Cas mono-dimensionnel}{section.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Fonction de lissage \040h\(n\) }{subsection.3.1}% 14
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Coefficients du filtre}{subsection.3.1}% 15
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Impl\351mentation r\351cursive}{subsection.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.2}{Cas bi-dimensionnel}{section.3}% 17
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Masques X et Y}{subsection.3.2}% 18
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Impl\351mentation r\351cursive \(sans convolution\)}{subsection.3.2}% 19
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Impl\351mentation directe \(avec convolutions\)}{subsection.3.2}% 20
+\BOOKMARK [1][-]{section.4}{Explication de l'impl\351mentation \(cas 2D\)}{}% 21
+\BOOKMARK [2][-]{subsection.4.1}{Etape 1/4 : Gradients selon x et y et lissage}{section.4}% 22
+\BOOKMARK [2][-]{subsection.4.2}{Etape 2/4 : Norme du gradient et direction du gradient}{section.4}% 23
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Norme du gradient}{subsection.4.2}% 24
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Direction du gradient}{subsection.4.2}% 25
+\BOOKMARK [2][-]{subsection.4.3}{Etape 3/4 : Suppression des non-maxima locaux}{section.4}% 26
+\BOOKMARK [2][-]{subsection.4.4}{Etape 4/4 : Seuillage par hyst\351r\351sis}{section.4}% 27
+\BOOKMARK [1][-]{section.5}{Bibliographie}{}% 28

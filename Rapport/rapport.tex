@@ -1,0 +1,91 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{classeRapport} % template INSA
+\usepackage{hyperref} % lien tableofcontents + url
+\usepackage{graphicx} % pour les images
+\usepackage{listings} % pour mettre du code
+\usepackage{color} % pour la couleur dans le code
+\usepackage{amsmath} % pour les matrices
+\usepackage{float} % pour le [H] des figures
+\usepackage{tikz} % pour tracer des figures
+\usepackage{amssymb} % pour utiliser \mathbb{Z} : symboles entiers relatifs
+
+\hypersetup{ % couleur des liens
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=blue,
+}
+
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+%%%%
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    %%%%
+    language=Matlab,
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},
+    showstringspaces=false, % without this there will be a symbol in the places where there is a space
+    numberstyle={\tiny \color{black}}, % size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, % some words to emphasise
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+
+\PageDeGarde
+{Images/TemplateINSA/rien} % image sur la page de garde
+{Canny-Deriche\\ Détecteur de Contours} % titre principal
+{Projet TIM} % sous-titre
+{Mehdi \textsc{ABOUZAID}\\
+ Damien \textsc{TOOMEY}\\
+ --\\
+ À l'attention de \\ M. \textsc{Bensrhair}} % nom
+{TIM - ASI - 2018-2019} % bas de page
+
+\Page{INSALogo}{rien.png} % logo de bas de page (en bas a droite)
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+\input{src/introduction.tex}
+
+\newpage
+\section{Description du filtre}
+\input{src/description_filtre.tex}
+
+\newpage
+\section{Modélisation mathématique}
+\input{src/modelisation_mathematique.tex}
+
+\newpage
+\section{Explication de l'implémentation (cas 2D)}
+\input{src/explication_implementation.tex}
+
+\newpage
+\section{Bibliographie}
+\input{src/bibliographie.tex}
+
+\end{document}
+

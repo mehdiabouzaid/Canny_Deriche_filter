@@ -1,0 +1,126 @@
+\subsection{Cas mono-dimensionnel}
+
+L'article présente deux détecteurs de contours optimaux :
+
+\begin{align*}
+& f(x) = -c \cdot e^{\alpha \cdot |x|} \cdot sin(\omega \cdot x) \\
+& g(x) = -c \cdot x \cdot e^{\alpha \cdot |x|}
+\end{align*}
+
+L'expression de $ g(x) $ est une forme simplifiée de l'expression de $ f(x) $ quand $ \omega $ tend vers $ 0 $. En effet, quand $ \omega \cdot x $ est petit, $ sin(\omega \cdot x) \approx \omega \cdot x $. \\
+
+Dans cet article, seule l'implémentation récursive de l'opérateur $ f(x) $ est proposée. Nous nous focaliserons donc uniquement sur l'opérateur $ f(x) $. L'auteur dit que l'implémentation de l'opérateur $ g(x) $ sera proposée dans un autre article que nous n'étudions pas dans le cadre de ce projet.
+
+Par ailleurs, les résultats de détection de contours sont améliorés en utilisant $ g(x) $ au lieu de $ f(x) $. De plus, avec $ g(x) $, le filtre ne dépend que de $ \alpha $ et non plus de $ \omega $.
+
+\subsubsection{Fonction de lissage $ h(n) $}
+
+$ h(n) $ correspond à l’intégrale $ h(x) $ de $ f(x) $ avec $ n \in \mathbb{Z}, \; x \in \rm I\!R $
+
+\[ h(n) = (c_1 \cdot sin(\omega \cdot |n|) + c_2 \cdot cos(\omega \cdot |n|)) \cdot e^{-\alpha \cdot |n|} \]
+
+\subsubsection{Coefficients du filtre}
+
+La forme du filtre est déterminée par $ (\alpha, \omega) \in \rm I\!R^+ $. On choisit ces deux paramètres en fonction de nos données. Des petites valeurs de $ \alpha $ donnent des filtres larges.
+
+\[ \left\{\begin{array}{ll}
+c= \frac{1-2 \cdot e^{-\alpha} \cdot cos(\omega) + e^{-2 \cdot \alpha}}{e^{-\alpha} \cdot sin(\omega)} \\
+c_1 = \frac{k \cdot \alpha}{\alpha^2 + \omega^2} \\
+c_2 = \frac{k \cdot \omega}{\alpha^2 + \omega^2}
+\end{array}\right.
+\quad
+\left\{\begin{array}{ll}
+b_1 = -2 \cdot e^{-\alpha} \cdot cos(\omega) \\
+b_2 = e^{-2 \cdot \alpha}
+\end{array}\right.
+\quad
+\left\{\begin{array}{ll}
+a = -c \cdot e^{-\alpha} \cdot sin(\omega) \\
+a_0 = c_2 \\
+a_1 = (-c_2 \cdot cos(\omega) + c_1 \cdot sin(\omega)) \cdot e^{-\alpha} \\
+a_2 = a_1 - c_2 \cdot b_1 \\
+a_3 = -c_2 \cdot b_2 \\
+\end{array}\right. \]
+
+\[ k = \frac{(1-2 \cdot e^{-\alpha} \cdot cos(\omega) + e^{-2 \cdot \alpha}) \cdot (\alpha^2 + \omega^2)}{2 \cdot \alpha \cdot e^{-\alpha} \cdot sin(\omega) + \omega - \omega \cdot e^{-2 \cdot \alpha}} \]
+
+\subsubsection{Implémentation récursive}
+
+\paragraph{Dérivation (gradient en 1D) \\\\}
+
+Le signal de sortie y, ayant comme signal d'entrée $ x $ et comme réponse impulsionnelle $ f $, peut être obtenu de manière récursive :
+\begin{align*}
+& y^+(m) = x(m-1)-b_1 \cdot y^+(m-1)-b_2 \cdot y^+(m-2) \quad m=1,...,M \\
+& \\
+& y^-(m) = x(m+1)-b_1 \cdot y^-(m+1)-b_2 \cdot y^-(m+2) \quad m=M,...,1 \\
+& \\
+& y(m) = a \cdot (y^+(m) - y^-(m)) \quad m=1,...,M 
+\end{align*}
+
+\paragraph{Lissage \\\\}
+
+Le signal de sortie y, ayant comme signal d'entrée $ x $ et comme réponse impulsionnelle $ h $, peut également être obtenu de manière récursive :
+\begin{align*}
+& y^+(m) = a_0 \cdot x(m) + a_1 \cdot x(m-1) - b_1 \cdot y^+(m-1) - b_2 \cdot y^+(m-2) \quad m=1,...,M \\
+& \\
+& y^-(m) = a_2 \cdot x(m+1) + a_3 \cdot x(m+2) - b_1 \cdot y^-(m+1) - b_2 \cdot y^-(m+2) \quad m=M,...,1 \\
+& \\
+& y(m) = y^+(m) + y^-(m) \quad m=1,...,M 
+\end{align*}
+
+Cette implémentation récursive du détecteur de contour permet d'éviter de faire des convolutions, ce qui augmente l'efficacité de l'algorithme.
+
+\subsection{Cas bi-dimensionnel}
+
+\begin{align*}
+& f(x,y) = -\frac{c \cdot k}{\alpha^2 + \omega^2} \cdot e^{- \alpha \cdot (|x| + |y|)} \cdot \textbf{[} sin(\omega \cdot x) \cdot (\alpha \cdot sin(\omega \cdot |y|) + \omega \cdot cos(\omega \cdot |y|)) + \\
+& \hskip 15 em sin(\omega \cdot y) \cdot (\alpha \cdot sin(\omega \cdot |x|) + \omega \cdot cos(\omega \cdot |x|)) \textbf{]} \\
+& \\
+&  \qquad \quad = \underbrace{f(x) \cdot h(y)}_{X} + \underbrace{h(x) \cdot f(y)}_{Y} \qquad \text{avec} \; (x,y) \in \rm I\!R^2 \\
+\end{align*}
+
+Le filtre est donc séparable en deux masques X et Y.
+
+\subsubsection{Masques X et Y}
+
+\begin{align*}
+& X(m,n)= f(m) \cdot h(n) = \frac{(-c \cdot e^{-\alpha \cdot |m|} \cdot sin(\omega \cdot m)) \cdot (k \cdot (\alpha \cdot sin(\omega \cdot |n|) + \omega \cdot cos(\omega \cdot |n|)) \cdot e^{-\alpha \cdot |n|})}{\alpha^2 + \omega^2} \\
+& Y(m,n)= h(m) \cdot f(n) = \frac{(k \cdot (\alpha \cdot sin(\omega \cdot |m|) + \omega \cdot cos(\omega \cdot |m|)) \cdot e^{-\alpha \cdot |m|}) \cdot (-c \cdot e^{-\alpha \cdot |n|} \cdot sin(\omega \cdot n))}{\alpha^2 + \omega^2} 
+\end{align*}
+
+\subsubsection{Implémentation récursive (sans convolution)}\label{algorithme_recursif}
+
+Pour éviter la convolution, on applique l’algorithme récursif suivant sur l'image originale, ce qui permet d'obtenir le gradient selon x.
+
+\paragraph{Gradient}
+
+\begin{align*}
+& Y^+(i,j)=I(i,j-1)-b_1 \cdot Y^+(i,j-1)-b_2 \cdot Y^+(i,j-2) \quad j=1,...,NCL \quad i=1,...,NLG \\
+& \\
+& Y^-(i,j)=I(i,j+1)-b_1 \cdot Y^-(i,j+1) - b_2 \cdot Y^-(i,j+2) \quad j=NCL,...,1 \quad i= 1,...,NLG \\
+& \\
+& S(i,j)=a \cdot (Y^+(i,j)-Y^-(i,j)) \quad j=1,...,NCL \quad i=1,...,NLG
+\end{align*}
+
+\paragraph{Lissage}
+
+\begin{align*}
+& R^+(i,j)=a_0 \cdot S(i,j) + a_1 \cdot S(i-1,j) - b_1 \cdot R^+(i-1,j) - b_2 \cdot R^+(i-2,j) \\
+& i=1,...,NLG \quad j=1,...,NCL \\
+& \\
+& R^-(i,j) = a_2 \cdot S(i+1,j) + a_3 \cdot S(i+2,j) - b_1 \cdot R^-(i+1,j) - b_2 \cdot R^-(i+2,j) \\
+& i=NLG,...,1 \quad j=1,...,NCL \\
+& \\
+&  R(i,j)=R^-(i,j) + R^+(i,j) \quad i=1,...,NLG \quad j=1,...,NCL
+\end{align*}
+
+En appliquant l'algorithme ci-dessus (gradient et lissage) sur la transposée de l'image originale, on obtient la transposée du gradient selon y.
+
+\subsubsection{Implémentation directe (avec convolutions)}\label{algorithme_direct}
+
+Soit $ I $ l'image de taille $ NLG $ x $ NCL $.
+
+Convoluer le masque X avec l'image $ I $ correspond à une convolution de l'image avec l'opérateur $ f(n) $ dans la direction \textbf{horizontale} (donne le gradient selon x) suivi d'une convolution avec l'opérateur $ h(n) $ dans la direction \textbf{verticale} (lissage). \\
+
+Convoluer le masque Y avec l'image $ I $ revient à une convolution de l'image avec l'opérateur $ f(n) $ dans la direction \textbf{verticale} (donne le gradient selon y) suivi d'une convolution avec l'opérateur $ h(n) $ dans la direction \textbf{horizontale} (lissage). (cela revient à appliquer le masque X sur la transposée de l'image originale).
+
